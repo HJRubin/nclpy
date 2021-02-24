@@ -2,10 +2,6 @@
 
 
 [![image](https://img.shields.io/pypi/v/nclpy.svg)](https://pypi.python.org/pypi/nclpy)
-[![image](https://img.shields.io/conda/vn/conda-forge/nclpy.svg)](https://anaconda.org/conda-forge/nclpy)
-[![image](https://pepy.tech/badge/nclpy)](https://pepy.tech/project/nclpy)
-[![image](https://github.com/giswqs/nclpy/workflows/docs/badge.svg)](https://nclpy.org)
-[![image](https://github.com/giswqs/nclpy/workflows/build/badge.svg)](https://github.com/giswqs/nclpy/actions?query=workflow%3Abuild)
 [![image](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 
@@ -18,8 +14,8 @@
 
 ## Features
 
--   TODO
--   TODO 2
+-   Allows you to reproduce NCL-style graphics with Python commands
+-   Not really sure if this is feasible but it would be nice
 
 ## Credits
 
