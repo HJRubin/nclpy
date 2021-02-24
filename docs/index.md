@@ -13,7 +13,8 @@
 
 ## Features
 
--   TODO
+-   Allows you to reproduce NCL-style graphics with Python commands
+-   Not really sure if this is feasible but it would be nice
 
 ## Credits
 
