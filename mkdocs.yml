@@ -23,7 +23,7 @@ plugins:
     - git-revision-date
     - mkdocs-jupyter:
           include_source: True
-          # execute: True
+          execute: True
           
 markdown_extensions:
     - attr_list
@@ -46,3 +46,6 @@ nav:
     - Report Issues: https://github.com/HJRubin/nclpy/issues
     - API Reference:
           - nclpy module: nclpy.md
+    - Notebooks: 
+        - notebooks/ipyleaflet_intro.ipynb
+        - notebooks/folium_intro.ipynb
