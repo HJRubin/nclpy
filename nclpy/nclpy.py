@@ -37,14 +37,14 @@ class Map(ipyleaflet.Map):
                 )
             self.add_layer(layer)
         else:
-            if kwargs["google_map"] == "ROADMAP"
+            if kwargs["google_map"] == "ROADMAP":
                 layer = TileLayer(
                     url="https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",
                     attribution="Google",
                     name="Google Maps",
                     )
                 self.add_layer(layer)
-            elif kwargs["google_map"] == "HYBRID"
+            elif kwargs["google_map"] == "HYBRID":
                 layer = TileLayer(
                     url="https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}",
                     attribution="Google",
