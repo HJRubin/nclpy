@@ -2,7 +2,7 @@
 import os
 import ipyleaflet
 from ipyleaflet import FullScreenControl, LayersControl, DrawControl, MeasureControl, ScaleControl, TileLayer
-from .utils import random_string
+# from .utils import random_string
 
 class Map(ipyleaflet.Map):
     """This Map class inherits the ipyleaflet Map class.
