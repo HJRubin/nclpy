@@ -54,8 +54,8 @@ nav:
           - notebooks/add_shapefile.ipynb
           - notebooks/test_utils.ipynb
     - Examples:
-          - notebooks/ipyleaflet_intro.ipynb 
-          - notebooks/folium_intro.ipynb
-          - notebooks/nclpy_intro.ipynb
-          - notebooks/add_shapefile.ipynb
-          - notebooks/test_utils.ipynb
+          - examples/ipyleaflet_intro.ipynb 
+          - examples/folium_intro.ipynb
+          - examples/nclpy_intro.ipynb
+          - examples/add_shapefile.ipynb
+          - examples/test_utils.ipynb
