@@ -57,12 +57,14 @@ class Map(ipyleaflet.Map):
                 )
                 self.add_layer(layer)
 
-    def add_geojson(self, in_geojson, style=None, layer_name="Untitled"):
+     def add_geojson(self, in_geojson, style=None, layer_name="Untitled"):
         """Adds a GeoJSON file to the map.
+
         Args:
             in_geojson (str): The file path to the input GeoJSON.
             style (dict, optional): The style for the GeoJSON layer. Defaults to None.
             layer_name (str, optional): The layer name for the GeoJSON layer. Defaults to "Untitled".
+
         Raises:
             FileNotFoundError: If the provided file path does not exist.
             TypeError: If the input geojson is not a str or dict.
@@ -103,6 +105,7 @@ class Map(ipyleaflet.Map):
 
     def add_shapefile(self, in_shp, style=None, layer_name="Untitled"):
         """Adds a shapefile layer to the map.
+
         Args:
             in_shp (str): The file path to the input shapefile.
             style (dict, optional): The style dictionary. Defaults to None.
@@ -114,11 +117,14 @@ class Map(ipyleaflet.Map):
 
 def shp_to_geojson(in_shp, out_geojson=None):
     """Converts a shapefile to GeoJSON.
+
     Args:
         in_shp (str): The file path to the input shapefile.
         out_geojson (str, optional): The file path to the output GeoJSON. Defaults to None.
+
     Raises:
         FileNotFoundError: If the input shapefile does not exist.
+
     Returns:
         dict: The dictionary of the GeoJSON.
     """
@@ -141,4 +147,4 @@ def shp_to_geojson(in_shp, out_geojson=None):
         if not os.path.exists(out_dir):
             os.makedirs(out_dir)
         with open(out_geojson, "w") as f:
-            f.write(json.dumps(geojson))   
+            f.write(json.dumps(geojson))    
