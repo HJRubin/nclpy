@@ -1,7 +1,8 @@
+"""Main module for the utils package."""
 import random
 import string
 
-def random_string(string_length=3, use_seed=False):
+def random_string(string_length=3, use_seed=False):    
     """Generates a random string of fixed length.
     Args:
         string_length(int, optional)" Fixed length. Defaults to 3.

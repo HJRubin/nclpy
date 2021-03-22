@@ -1,4 +1,4 @@
-"""Main module for the geodemo package."""
+"""Main module for the nclpy package."""
 import os
 import ipyleaflet
 from ipyleaflet import FullScreenControl, LayersControl, DrawControl, MeasureControl, ScaleControl, TileLayer
