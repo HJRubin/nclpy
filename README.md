@@ -11,7 +11,13 @@
 -   Free software: MIT license
 -   Documentation: https://HJRubin.github.io/nclpy
     
+## Installation
 
+### Conda
+
+``` 
+conda install nclpy -c conda-forge
+```
 ## Features
 
 -   Allows you to reproduce NCL-style graphics with Python commands
