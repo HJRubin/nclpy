@@ -53,3 +53,4 @@ nav:
           - notebooks/nclpy_intro.ipynb
           - notebooks/add_shapefile.ipynb
           - notebooks/test_utils.ipynb
+          - notebooks/earthengine_intro.ipynb
