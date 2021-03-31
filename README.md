@@ -3,6 +3,8 @@
 
 [![image](https://img.shields.io/pypi/v/nclpy.svg)](https://pypi.python.org/pypi/nclpy)
 [![image](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![image](https://img.shields.io/conda/vn/conda-forge/nclpy.svg)](https://anaconda.org/conda-forge/nclpy)
+
 
 
 **A Python package for working with NCL**
