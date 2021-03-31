@@ -2,7 +2,7 @@
 
 __author__ = """Hannah Rubin"""
 __email__ = 'hannahrubin100@gmail.com'
-__version__ = '0.0.9'
+__version__ = '0.0.10'
 
 from .nclpy import *
 from .utils import *
