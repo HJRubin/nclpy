@@ -56,3 +56,6 @@ nav:
           - notebooks/earthengine_intro.ipynb
           - notebooks/ipywidget.ipynb
           - notebooks/ipywidget_box.ipynb
+          - notebooks/ipywidget_events.ipynb
+          - notebooks/toolbar.ipynb
+          - notebooks/ipyfilechooser.ipynb
