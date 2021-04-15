@@ -55,3 +55,4 @@ nav:
           - notebooks/test_utils.ipynb
           - notebooks/earthengine_intro.ipynb
           - notebooks/ipywidget.ipynb
+          - notebooks/ipywidget_box.ipynb
