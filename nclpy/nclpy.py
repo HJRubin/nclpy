@@ -5,6 +5,7 @@ import ee
 from .common import ee_initialize
 from ipyleaflet import FullScreenControl, LayersControl, DrawControl, MeasureControl, ScaleControl, TileLayer
 from .utils import random_string
+from .generate_points import random_points
 from .toolbar import main_toolbar
 
 class Map(ipyleaflet.Map):
