@@ -1,7 +1,7 @@
 """This module lets you draw shapes and generate random points inside."""
 import ee
 import geemap
-from .toolbar import main_toolbar
+import ipywidgets as widgets
 
 def ee_initialize(token_name="EARTHENGINE_TOKEN"):
     """Authenticates Earth Engine and initialize an Earth Engine session"""
@@ -20,30 +20,6 @@ def ee_initialize(token_name="EARTHENGINE_TOKEN"):
         except Exception:
             ee.Authenticate()
             ee.Initialize()
-
-def clipButton():
-    """Makes a button to clip the drawing"""
-
-
-= ui.Button({
-    label: 'Clip image',
-    onClick: function() {
-      var layers_as_features = Map.layers().map(function (lyr) {
-                                                                var ftr = ee.Feature(lyr.getEeObject().geometry(), 
-                                                                                    {name: lyr.getName()})
-                                                                return ftr
-                                                                });
-      var geometry = ee.FeatureCollection(layers_as_features).filter(ee.Filter.eq("name", "geometry"))
-
-      Map.addLayer(image.clip(geometry), vizParams, 'clipped');
-    },
-    style: {
-        color: 'blue',
-    },
-})
-
-return clipButton
-
 
 def random_points(region, color="00FFFF", points=100, seed=0):
     """Generates a specified number of random points inside a given area.

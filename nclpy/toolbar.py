@@ -38,7 +38,7 @@ def main_toolbar(m):
     cols = 2
     grid = widgets.GridspecLayout(rows, cols, grid_gap="0px", layout=widgets.Layout(width="62px"))
 
-    icons = ["folder-open", "map", "info", "question"]
+    icons = ["folder-open", "circle", "info", "question"]
 
     for i in range(rows):
         for j in range(cols):
@@ -97,8 +97,17 @@ def main_toolbar(m):
             if b.icon == "folder-open":
                 display(filechooser_widget)
                 m.add_control(output_ctrl)
+            if b.icon == "circle":
+                def my_func(lyr):
+                    ftr = ee.Feature(lyr.getEeObject().geometry(),{name: lyr.getName()})
+                
+                layers_as_features = my_func(Map.layers)
+                geometry = ee.FeatureCollection(layers_as_features).filter(ee.Filter.eq("name", "geometry"))
+                new_geom = image.clip(geometry)
 
     for i in range(rows):
         for j in range(cols):
             tool = grid[i, j]
             tool.on_click(tool_click)
+
+

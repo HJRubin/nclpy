@@ -2,6 +2,7 @@
 import os
 import ipyleaflet
 import ee
+import geemap
 from .common import ee_initialize
 from ipyleaflet import FullScreenControl, LayersControl, DrawControl, MeasureControl, ScaleControl, TileLayer
 from .utils import random_string
