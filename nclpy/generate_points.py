@@ -1,6 +1,5 @@
 """This module lets you draw shapes and generate random points inside."""
 import ee
-import geemap
 import ipywidgets as widgets
 
 def ee_initialize(token_name="EARTHENGINE_TOKEN"):
