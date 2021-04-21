@@ -54,9 +54,10 @@ nav:
           - notebooks/add_shapefile.ipynb
           - notebooks/test_utils.ipynb
           - notebooks/earthengine_intro.ipynb
-          - notebooks/ipywidget.ipynb
-          - notebooks/ipywidget_box.ipynb
-          - notebooks/ipywidget_events.ipynb
+          - notebooks/ipywidgets.ipynb
+          - notebooks/ipywidgets_box.ipynb
+          - notebooks/ipywidgets_events.ipynb
           - notebooks/toolbar.ipynb
           - notebooks/ipyfilechooser.ipynb
           - notebooks/whitebox.ipynb
+          - toolbar_gui.ipynb
