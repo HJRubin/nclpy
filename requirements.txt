@@ -1,5 +1,6 @@
 earthengine-api
 folium
 ipyfilechooser
+python-box
 ipyleaflet
 pyshp
