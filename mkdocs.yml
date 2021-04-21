@@ -60,4 +60,4 @@ nav:
           - notebooks/toolbar.ipynb
           - notebooks/ipyfilechooser.ipynb
           - notebooks/whitebox.ipynb
-          - toolbar_gui.ipynb
+          - notebooks/toolbar_gui.ipynb
