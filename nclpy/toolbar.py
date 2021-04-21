@@ -38,7 +38,7 @@ def main_toolbar(m):
     cols = 2
     grid = widgets.GridspecLayout(rows, cols, grid_gap="0px", layout=widgets.Layout(width="62px"))
 
-    icons = ["folder-open", "circle", "info", "question"]
+    icons = ["folder-open", "map", "gears", "question"]
 
     for i in range(rows):
         for j in range(cols):
@@ -97,13 +97,71 @@ def main_toolbar(m):
             if b.icon == "folder-open":
                 display(filechooser_widget)
                 m.add_control(output_ctrl)
-            if b.icon == "circle":
-                def my_func(lyr):
-                    ftr = ee.Feature(lyr.getEeObject().geometry(),{name: lyr.getName()})
-                
-                layers_as_features = my_func(Map.layers)
-                geometry = ee.FeatureCollection(layers_as_features).filter(ee.Filter.eq("name", "geometry"))
-                new_geom = image.clip(geometry)
+            elif b.icon == "map":
+                change_basemap(m)
+            elif b.icon == "gears":
+                import whiteboxgui.whiteboxgui as wbt
+
+                if hasattr(m, "whitebox") and m.whitebox is not None:
+                    if m.whitebox in m.controls:
+                        m.remove_control(m.whitebox)
+
+                tools_dict = wbt.get_wbt_dict()
+                wbt_toolbox = wbt.build_toolbox(
+                    tools_dict, max_width="800px", max_height="500px"
+                )
+
+                wbt_control = WidgetControl(
+                    widget=wbt_toolbox, position="bottomright"
+                )                
+
+                m.whitebox = wbt_control
+                m.add_control(wbt_control)
+    def change_basemap(m):
+        """Widget for change basemaps.
+        Args:
+            m (object): geemap.Map()
+        """
+        from .basemaps import _ee_basemaps
+
+        dropdown = widgets.Dropdown(
+            options=list(_ee_basemaps.keys()),
+            value="ROADMAP",
+            layout=widgets.Layout(width="200px")
+            # description="Basemaps",
+        )
+
+        close_btn = widgets.Button(
+            icon="times",
+            tooltip="Close the basemap widget",
+            button_style="primary",
+            layout=widgets.Layout(width="32px"),
+        )
+
+        basemap_widget = widgets.HBox([dropdown, close_btn])
+
+        def on_click(change):
+            basemap_name = change["new"]
+
+            if len(m.layers) == 1:
+                old_basemap = m.layers[0]
+            else:
+                old_basemap = m.layers[1]
+            m.substitute_layer(old_basemap, _ee_basemaps[basemap_name])
+
+        dropdown.observe(on_click, "value")
+
+        def close_click(change):
+            m.toolbar_reset()
+            if m.basemap_ctrl is not None and m.basemap_ctrl in m.controls:
+                m.remove_control(m.basemap_ctrl)
+            basemap_widget.close()
+
+        close_btn.on_click(close_click)
+
+        basemap_control = WidgetControl(widget=basemap_widget, position="topright")
+        m.add_control(basemap_control)
+        m.basemap_ctrl = basemap_control
 
     for i in range(rows):
         for j in range(cols):

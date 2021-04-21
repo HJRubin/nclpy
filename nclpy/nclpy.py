@@ -7,6 +7,7 @@ from ipyleaflet import FullScreenControl, LayersControl, DrawControl, MeasureCon
 from .utils import random_string
 from .generate_points import random_points
 from .toolbar import main_toolbar
+from .basemaps import basemaps, basemap_tiles
 
 class Map(ipyleaflet.Map):
     """This Map class inherits the ipyleaflet Map class.
