@@ -1,6 +1,9 @@
 earthengine-api
 folium
+geopandas
 ipyfilechooser
 python-box
 ipyleaflet
+whitebox>=1.4.1
+whiteboxgui
 pyshp
