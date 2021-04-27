@@ -23,7 +23,8 @@ conda install nclpy -c conda-forge
 ## Features
 
 -   Allows you to reproduce NCL-style graphics with Python commands
--   Not really sure if this is feasible but it would be nice
+-   It turns out this isn't feasible (yet)
+-   Instead we can do some interactive mapping and spatial analysis!
 
 ## Credits
 

@@ -40,6 +40,12 @@ class Map(ipyleaflet.Map):
         self.add_control(ScaleControl(position="bottomleft"))
 
         main_toolbar(self)
+        self.toolbar = None
+        self.toolbar_button = None
+
+
+        if "toolbar_ctrl" not in kwargs.keys():
+            kwargs["toolbar_ctrl"] = True
 
         if "google_map" not in kwargs:
             layer = TileLayer(
@@ -134,6 +140,13 @@ class Map(ipyleaflet.Map):
         self.add_layer(ee_layer)
 
     addLayer = add_ee_layer
+
+    def toolbar_reset(self):
+        """Reset the toolbar so that no tool is selected."""
+        toolbar_grid = self.toolbar
+        for tool in toolbar_grid:
+            tool.value = False
+
 
 def shp_to_geojson(in_shp, out_geojson=None):
     """Converts a shapefile to GeoJSON.

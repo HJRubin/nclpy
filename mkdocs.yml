@@ -61,3 +61,4 @@ nav:
           - notebooks/ipyfilechooser.ipynb
           - notebooks/whitebox.ipynb
           - notebooks/toolbar_gui.ipynb
+          - notebooks/generate_points_test.ipynb

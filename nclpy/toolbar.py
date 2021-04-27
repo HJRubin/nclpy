@@ -1,6 +1,6 @@
 import os
 import ipywidgets as widgets
-from ipyleaflet import WidgetControl
+from ipyleaflet import WidgetControl, DrawControl
 from ipyfilechooser import FileChooser
 from IPython.display import display
 
@@ -38,7 +38,7 @@ def main_toolbar(m):
     cols = 2
     grid = widgets.GridspecLayout(rows, cols, grid_gap="0px", layout=widgets.Layout(width="62px"))
 
-    icons = ["folder-open", "map", "gears", "question"]
+    icons = ["folder-open", "map", "gears", "circle"]
 
     for i in range(rows):
         for j in range(cols):
@@ -87,8 +87,13 @@ def main_toolbar(m):
         elif change["new"] == "Reset":
             fc.reset()
         elif change["new"] == "Close":
-            fc.reset()
-            m.remove_control(output_ctrl)
+            if m is not None:
+                m.toolbar_reset()
+                if m.tool_control is not None and m.tool_control in m.controls:
+                    m.remove_control(m.tool_control)
+                    m.tool_control = None
+            toolbar_widget.close()
+
     buttons.observe(button_click, "value")     
 
     def tool_click(b):    
@@ -117,6 +122,24 @@ def main_toolbar(m):
 
                 m.whitebox = wbt_control
                 m.add_control(wbt_control)
+            elif b.icon == "circle":
+                if m.draw_control is not None:
+                    random_points(m.draw_control)
+                    print('hi')        
+
+
+    def close_btn_click(change):
+        if change["new"]:
+            toolbar_button.value = False
+            if m is not None:
+                if m.tool_control is not None and m.tool_control in m.controls:
+                    m.remove_control(m.tool_control)
+                    m.tool_control = None
+                m.toolbar_reset()
+            toolbar_widget.close()
+
+    close_button.observe(close_btn_click, "value")
+    
     def change_basemap(m):
         """Widget for change basemaps.
         Args:
