@@ -3,6 +3,8 @@ import ipywidgets as widgets
 from ipyleaflet import WidgetControl, DrawControl
 from ipyfilechooser import FileChooser
 from IPython.display import display
+from .generate_points import random_points
+from .common import *
 
 
 def main_toolbar(m):
@@ -95,6 +97,8 @@ def main_toolbar(m):
             toolbar_widget.close()
 
     buttons.observe(button_click, "value")     
+    
+    draw_control = DrawControl()
 
     def tool_click(b):    
         with output:
@@ -123,10 +127,11 @@ def main_toolbar(m):
                 m.whitebox = wbt_control
                 m.add_control(wbt_control)
             elif b.icon == "circle":
-                if m.draw_control is not None:
-                    random_points(m.draw_control)
-                    print('hi')        
-
+                if draw_control is not None:
+                    def handle_draw(target, action, geo_json):
+                        geom = geojson_to_ee(geo_json, False)
+                    geom_1 = draw_control.on_draw(handle_draw)
+                    points = random_points(geom_1, "00FF00", 10, 0)
 
     def close_btn_click(change):
         if change["new"]:

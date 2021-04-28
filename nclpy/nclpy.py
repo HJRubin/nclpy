@@ -179,9 +179,7 @@ def shp_to_geojson(in_shp, out_geojson=None):
         with open(out_geojson, "w") as f:
             f.write(json.dumps(geojson))   
 
-def ee_tile_layer(
-    ee_object, vis_params={}, name="Layer untitled", shown=True, opacity=1.0
-):
+def ee_tile_layer(ee_object, vis_params={}, name="Layer untitled", shown=True, opacity=1.0):
     """Converts and Earth Engine layer to ipyleaflet TileLayer.
     Args:
         ee_object (Collection|Feature|Image|MapId): The object to add to the map.
@@ -242,3 +240,4 @@ def ee_tile_layer(
         visible=shown,
     )
     return tile_layer
+

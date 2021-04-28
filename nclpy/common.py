@@ -183,3 +183,47 @@ def tool_template(m=None):
             m.tool_control = toolbar_control
     else:
         return toolbar_widget
+
+def geojson_to_ee(geo_json, geodesic=True):
+    """Converts a geojson to ee.Geometry()
+    Args:
+        geo_json (dict): A geojson geometry dictionary or file path.
+        geodesic (bool, optional): Whether line segments should be interpreted as spherical geodesics. If false, indicates that line segments should be interpreted as planar lines in the specified CRS. If absent, defaults to true if the CRS is geographic (including the default EPSG:4326), or to false if the CRS is projected.
+    Returns:
+        ee_object: An ee.Geometry object
+    """
+
+    try:
+
+        import json
+
+        if not isinstance(geo_json, dict) and os.path.isfile(geo_json):
+            with open(os.path.abspath(geo_json), encoding="utf-8") as f:
+                geo_json = json.load(f)
+
+        if geo_json["type"] == "FeatureCollection":
+            features = ee.FeatureCollection(geo_json["features"])
+            return features
+        elif geo_json["type"] == "Feature":
+            geom = None
+            keys = geo_json["properties"]["style"].keys()
+            if "radius" in keys:  # Checks whether it is a circle
+                geom = ee.Geometry(geo_json["geometry"])
+                radius = geo_json["properties"]["style"]["radius"]
+                geom = geom.buffer(radius)
+            elif (
+                geo_json["geometry"]["type"] == "Point"
+            ):  # Checks whether it is a point
+                coordinates = geo_json["geometry"]["coordinates"]
+                longitude = coordinates[0]
+                latitude = coordinates[1]
+                geom = ee.Geometry.Point(longitude, latitude)
+            else:
+                geom = ee.Geometry(geo_json["geometry"], "", geodesic)
+            return geom
+        else:
+            raise Exception("Could not convert the geojson to ee.Geometry()")
+    except Exception as e:
+        print("Could not convert the geojson to ee.Geometry()")
+        raise Exception(e)    
+        
