@@ -3,7 +3,14 @@ import os
 import ipyleaflet
 import ee
 from .common import ee_initialize, geojson_to_ee
-from ipyleaflet import FullScreenControl, LayersControl, DrawControl, MeasureControl, ScaleControl, TileLayer
+from ipyleaflet import (
+    FullScreenControl,
+    LayersControl,
+    DrawControl,
+    MeasureControl,
+    ScaleControl,
+    TileLayer,
+)
 from .utils import random_string
 from .generate_points import random_points
 from .toolbar import main_toolbar
@@ -28,13 +35,15 @@ def ee_initialize(token_name="EARTHENGINE_TOKEN"):
             ee.Authenticate()
             ee.Initialize()
 
+
 ee_initialize()
+
 
 class Map(ipyleaflet.Map):
     """This Map class inherits the ipyleaflet Map class.
     Args:
         ipyleaflet (ipyleaflet.Map): An ipyleaflet map.
-    """    
+    """
 
     def __init__(self, **kwargs):
 
@@ -91,7 +100,7 @@ class Map(ipyleaflet.Map):
                 if len(train_props) > 0:
                     feature = ee.Feature(geo_json, train_props)
                 else:
-                    feature = ee.Feature(geo_json) #geom
+                    feature = ee.Feature(geo_json)  # geom
                 self.draw_last_json = geo_json
                 self.draw_last_feature = feature
                 if action == "deleted" and len(self.draw_features) > 0:
@@ -105,7 +114,7 @@ class Map(ipyleaflet.Map):
                 ee_draw_layer = ee_tile_layer(
                     collection, {"color": "blue"}, "Drawn Features", False, 0.5
                 )
-                draw_layer_index = find_layer_index(self,"Drawn Features")
+                draw_layer_index = find_layer_index(self, "Drawn Features")
 
                 if draw_layer_index == -1:
                     self.add_layer(ee_draw_layer)
@@ -125,7 +134,6 @@ class Map(ipyleaflet.Map):
                 print("There was an error creating Earth Engine Feature.")
                 raise Exception(e)
 
-
         self.add_control(FullScreenControl())
         self.add_control(LayersControl(position="topright"))
         draw_control = DrawControl(position="topleft")
@@ -137,7 +145,6 @@ class Map(ipyleaflet.Map):
 
         ###
         ###
-
 
         if "toolbar_ctrl" not in kwargs.keys():
             kwargs["toolbar_ctrl"] = True
@@ -161,10 +168,9 @@ class Map(ipyleaflet.Map):
                 layer = TileLayer(
                     url="https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}",
                     attribution="Google",
-                    name="Google Satellite"
+                    name="Google Satellite",
                 )
                 self.add_layer(layer)
-    
 
     def add_geojson(self, in_geojson, style=None, layer_name="Untitled"):
         """Adds a GeoJSON file to the map.
@@ -175,7 +181,7 @@ class Map(ipyleaflet.Map):
         Raises:
             FileNotFoundError: If the provided file path does not exist.
             TypeError: If the input geojson is not a str or dict.
-        """        
+        """
 
         import json
 
@@ -189,10 +195,10 @@ class Map(ipyleaflet.Map):
 
             with open(in_geojson) as f:
                 data = json.load(f)
-        
+
         elif isinstance(in_geojson, dict):
             data = in_geojson
-        
+
         else:
             raise TypeError("The input geojson must be a type of str or dict.")
 
@@ -208,7 +214,7 @@ class Map(ipyleaflet.Map):
             }
 
         geo_json = ipyleaflet.GeoJSON(data=data, style=style, name=layer_name)
-        self.add_layer(geo_json) 
+        self.add_layer(geo_json)
 
     def add_shapefile(self, in_shp, style=None, layer_name="Untitled"):
         """Adds a shapefile layer to the map.
@@ -243,51 +249,53 @@ class Map(ipyleaflet.Map):
         for tool in toolbar_grid:
             tool.value = False
 
-# Handles draw events
-    # def handle_draw(target, action, geo_json):
-    #     try:
-    #         self.roi_start = True
-    #         geom = geojson_to_ee(geo_json, False)
-    #         self.user_roi = geom
-    #         feature = ee.Feature(geom)
-    #         self.draw_last_json = geo_json
-    #         self.draw_last_feature = feature
-    #         if action == "deleted" and len(self.draw_features) > 0:
-    #             self.draw_features.remove(feature)
-    #             self.draw_count -= 1
-    #         else:
-    #             self.draw_features.append(feature)
-    #             self.draw_count += 1
-    #         collection = ee.FeatureCollection(self.draw_features)
-    #         self.user_rois = collection
-    #         ee_draw_layer = ee_tile_layer(
-    #             collection, {"color": "blue"}, "Drawn Features", False, 0.5
-    #         )
-    #         draw_layer_index = self.find_layer_index("Drawn Features")
 
-    #         if draw_layer_index == -1:
-    #             self.add_layer(ee_draw_layer)
-    #             self.draw_layer = ee_draw_layer
-    #         else:
-    #             self.substitute_layer(self.draw_layer, ee_draw_layer)
-    #             self.draw_layer = ee_draw_layer
-    #         self.roi_end = True
-    #         self.roi_start = False
-    #     except Exception as e:
-    #         self.draw_count = 0
-    #         self.draw_features = []
-    #         self.draw_last_feature = None
-    #         self.draw_layer = None
-    #         self.user_roi = None
-    #         self.roi_start = False
-    #         self.roi_end = False
-    #         print("There was an error creating Earth Engine Feature.")
-    #         raise Exception(e)
+# Handles draw events
+# def handle_draw(target, action, geo_json):
+#     try:
+#         self.roi_start = True
+#         geom = geojson_to_ee(geo_json, False)
+#         self.user_roi = geom
+#         feature = ee.Feature(geom)
+#         self.draw_last_json = geo_json
+#         self.draw_last_feature = feature
+#         if action == "deleted" and len(self.draw_features) > 0:
+#             self.draw_features.remove(feature)
+#             self.draw_count -= 1
+#         else:
+#             self.draw_features.append(feature)
+#             self.draw_count += 1
+#         collection = ee.FeatureCollection(self.draw_features)
+#         self.user_rois = collection
+#         ee_draw_layer = ee_tile_layer(
+#             collection, {"color": "blue"}, "Drawn Features", False, 0.5
+#         )
+#         draw_layer_index = self.find_layer_index("Drawn Features")
+
+#         if draw_layer_index == -1:
+#             self.add_layer(ee_draw_layer)
+#             self.draw_layer = ee_draw_layer
+#         else:
+#             self.substitute_layer(self.draw_layer, ee_draw_layer)
+#             self.draw_layer = ee_draw_layer
+#         self.roi_end = True
+#         self.roi_start = False
+#     except Exception as e:
+#         self.draw_count = 0
+#         self.draw_features = []
+#         self.draw_last_feature = None
+#         self.draw_layer = None
+#         self.user_roi = None
+#         self.roi_start = False
+#         self.roi_end = False
+#         print("There was an error creating Earth Engine Feature.")
+#         raise Exception(e)
 
 
 # if kwargs.get("draw_ctrl"):
 #     self.add_control(draw_control)
-        
+
+
 def shp_to_geojson(in_shp, out_geojson=None):
     """Converts a shapefile to GeoJSON.
     Args:
@@ -317,9 +325,12 @@ def shp_to_geojson(in_shp, out_geojson=None):
         if not os.path.exists(out_dir):
             os.makedirs(out_dir)
         with open(out_geojson, "w") as f:
-            f.write(json.dumps(geojson))   
+            f.write(json.dumps(geojson))
 
-def ee_tile_layer(ee_object, vis_params={}, name="Layer untitled", shown=True, opacity=1.0):
+
+def ee_tile_layer(
+    ee_object, vis_params={}, name="Layer untitled", shown=True, opacity=1.0
+):
     """Converts and Earth Engine layer to ipyleaflet TileLayer.
     Args:
         ee_object (Collection|Feature|Image|MapId): The object to add to the map.
@@ -380,4 +391,3 @@ def ee_tile_layer(ee_object, vis_params={}, name="Layer untitled", shown=True, o
         visible=shown,
     )
     return tile_layer
-

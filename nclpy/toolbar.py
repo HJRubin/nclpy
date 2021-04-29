@@ -24,7 +24,7 @@ def main_toolbar(m):
         icon="times",
         button_style="primary",
         layout=widgets.Layout(height="28px", width="28px", padding=padding),
-    )    
+    )
 
     toolbar = widgets.HBox([toolbar_button])
 
@@ -33,19 +33,25 @@ def main_toolbar(m):
             toolbar_button.close()
             close_button.close()
             toolbar.close()
-            
+
     close_button.observe(close_click, "value")
 
     rows = 2
     cols = 2
-    grid = widgets.GridspecLayout(rows, cols, grid_gap="0px", layout=widgets.Layout(width="62px"))
+    grid = widgets.GridspecLayout(
+        rows, cols, grid_gap="0px", layout=widgets.Layout(width="62px")
+    )
 
     icons = ["folder-open", "map", "gears", "circle"]
 
     for i in range(rows):
         for j in range(cols):
-            grid[i, j] = widgets.Button(description="", button_style="primary", icon=icons[i*rows+j], 
-                                        layout=widgets.Layout(width="28px", padding="0px"))
+            grid[i, j] = widgets.Button(
+                description="",
+                button_style="primary",
+                icon=icons[i * rows + j],
+                layout=widgets.Layout(width="28px", padding="0px"),
+            )
 
     toolbar = widgets.VBox([toolbar_button])
 
@@ -54,7 +60,7 @@ def main_toolbar(m):
             toolbar.children = [widgets.HBox([close_button, toolbar_button]), grid]
         else:
             toolbar.children = [toolbar_button]
-        
+
     toolbar_button.observe(toolbar_click, "value")
 
     toolbar_ctrl = WidgetControl(widget=toolbar, position="topright")
@@ -72,14 +78,14 @@ def main_toolbar(m):
     )
     buttons.style.button_width = "80px"
 
-    data_dir = os.path.abspath('./data')
+    data_dir = os.path.abspath("./data")
 
     fc = FileChooser(data_dir)
     fc.use_dir_icons = True
-    fc.filter_pattern = ['*.shp', '*.geojson']
+    fc.filter_pattern = ["*.shp", "*.geojson"]
 
     filechooser_widget = widgets.VBox([fc, buttons])
-    
+
     draw_control = DrawControl()
 
     def button_click(change):
@@ -98,9 +104,9 @@ def main_toolbar(m):
                     m.tool_control = None
             toolbar_widget.close()
 
-    buttons.observe(button_click, "value")     
-    
-    def tool_click(b):    
+    buttons.observe(button_click, "value")
+
+    def tool_click(b):
         with output:
             output.clear_output()
             if b.icon == "folder-open":
@@ -120,9 +126,7 @@ def main_toolbar(m):
                     tools_dict, max_width="800px", max_height="500px"
                 )
 
-                wbt_control = WidgetControl(
-                    widget=wbt_toolbox, position="bottomright"
-                )                
+                wbt_control = WidgetControl(widget=wbt_toolbox, position="bottomright")
 
                 m.whitebox = wbt_control
                 m.add_control(wbt_control)
@@ -132,7 +136,6 @@ def main_toolbar(m):
                     geom = geojson_to_ee(m.user_roi, False)
                     r_points = random_points(geom)
                     print(r_points)
-
 
     def close_btn_click(change):
         if change["new"]:
@@ -145,7 +148,7 @@ def main_toolbar(m):
             toolbar_widget.close()
 
     close_button.observe(close_btn_click, "value")
-    
+
     def change_basemap(m):
         """Widget for change basemaps.
         Args:
@@ -196,5 +199,3 @@ def main_toolbar(m):
         for j in range(cols):
             tool = grid[i, j]
             tool.on_click(tool_click)
-
-
