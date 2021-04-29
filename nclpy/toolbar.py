@@ -79,6 +79,8 @@ def main_toolbar(m):
     fc.filter_pattern = ['*.shp', '*.geojson']
 
     filechooser_widget = widgets.VBox([fc, buttons])
+    
+    draw_control = DrawControl()
 
     def button_click(change):
         if change["new"] == "Apply" and fc.selected is not None:
@@ -98,8 +100,6 @@ def main_toolbar(m):
 
     buttons.observe(button_click, "value")     
     
-    draw_control = DrawControl()
-
     def tool_click(b):    
         with output:
             output.clear_output()
@@ -127,11 +127,12 @@ def main_toolbar(m):
                 m.whitebox = wbt_control
                 m.add_control(wbt_control)
             elif b.icon == "circle":
-                if draw_control is not None:
-                    def handle_draw(target, action, geo_json):
-                        geom = geojson_to_ee(geo_json, False)
-                    geom_1 = draw_control.on_draw(handle_draw)
-                    points = random_points(geom_1, "00FF00", 10, 0)
+                if m.user_roi is not None:
+                    print(m.user_roi)
+                    geom = geojson_to_ee(m.user_roi, False)
+                    r_points = random_points(geom)
+                    print(r_points)
+
 
     def close_btn_click(change):
         if change["new"]:

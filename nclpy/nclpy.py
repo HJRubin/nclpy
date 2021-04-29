@@ -2,12 +2,33 @@
 import os
 import ipyleaflet
 import ee
-from .common import ee_initialize
+from .common import ee_initialize, geojson_to_ee
 from ipyleaflet import FullScreenControl, LayersControl, DrawControl, MeasureControl, ScaleControl, TileLayer
 from .utils import random_string
 from .generate_points import random_points
 from .toolbar import main_toolbar
 from .basemaps import basemaps, basemap_tiles
+
+
+def ee_initialize(token_name="EARTHENGINE_TOKEN"):
+    """Authenticates Earth Engine and initialize an Earth Engine session"""
+    if ee.data._credentials is None:
+        try:
+            ee_token = os.environ.get(token_name)
+            if ee_token is not None:
+                credential_file_path = os.path.expanduser("~/.config/earthengine/")
+                if not os.path.exists(credential_file_path):
+                    credential = '{"refresh_token":"%s"}' % ee_token
+                    os.makedirs(credential_file_path, exist_ok=True)
+                    with open(credential_file_path + "credentials", "w") as file:
+                        file.write(credential)
+
+            ee.Initialize()
+        except Exception:
+            ee.Authenticate()
+            ee.Initialize()
+
+ee_initialize()
 
 class Map(ipyleaflet.Map):
     """This Map class inherits the ipyleaflet Map class.
@@ -33,15 +54,89 @@ class Map(ipyleaflet.Map):
         else:
             self.layout.height = kwargs["height"]
 
-        self.add_control(FullScreenControl())
-        self.add_control(LayersControl(position="topright"))
-        self.add_control(DrawControl(position="topleft"))
-        self.add_control(MeasureControl())
-        self.add_control(ScaleControl(position="bottomleft"))
+        self.draw_count = 0
+        self.draw_features = []
+        self.draw_last_feature = None
+        self.draw_layer = None
+        self.draw_last_json = None
+        self.draw_last_bounds = None
+        self.user_roi = None
+        self.user_rois = None
 
         main_toolbar(self)
         self.toolbar = None
         self.toolbar_button = None
+        train_props = {}
+
+        def find_layer_index(self, name):
+            """Finds layer index by name
+            Args:
+                name (str): Name of the layer to find.
+            Returns:
+                int: Index of the layer with the specified name
+            """
+            layers = self.layers
+
+            for index, layer in enumerate(layers):
+                if layer.name == name:
+                    return index
+
+            return -1
+
+        def handle_draw(target, action, geo_json):
+            try:
+                print(target, action, geo_json, type(geo_json))
+                # geom = geojson_to_ee(geo_json, False)
+                self.user_roi = geo_json
+                if len(train_props) > 0:
+                    feature = ee.Feature(geo_json, train_props)
+                else:
+                    feature = ee.Feature(geo_json) #geom
+                self.draw_last_json = geo_json
+                self.draw_last_feature = feature
+                if action == "deleted" and len(self.draw_features) > 0:
+                    self.draw_features.remove(feature)
+                    self.draw_count -= 1
+                else:
+                    self.draw_features.append(feature)
+                    self.draw_count += 1
+                collection = ee.FeatureCollection(self.draw_features)
+                self.user_rois = collection
+                ee_draw_layer = ee_tile_layer(
+                    collection, {"color": "blue"}, "Drawn Features", False, 0.5
+                )
+                draw_layer_index = find_layer_index(self,"Drawn Features")
+
+                if draw_layer_index == -1:
+                    self.add_layer(ee_draw_layer)
+                    self.draw_layer = ee_draw_layer
+                else:
+                    self.substitute_layer(self.draw_layer, ee_draw_layer)
+                    self.draw_layer = ee_draw_layer
+
+            except Exception as e:
+                self.draw_count = 0
+                self.draw_features = []
+                self.draw_last_feature = None
+                self.draw_layer = None
+                self.user_roi = None
+                self.roi_start = False
+                self.roi_end = False
+                print("There was an error creating Earth Engine Feature.")
+                raise Exception(e)
+
+
+        self.add_control(FullScreenControl())
+        self.add_control(LayersControl(position="topright"))
+        draw_control = DrawControl(position="topleft")
+        draw_control.on_draw(handle_draw)
+        # self.draw_control = draw_control
+        self.add_control(draw_control)
+        self.add_control(MeasureControl())
+        self.add_control(ScaleControl(position="bottomleft"))
+
+        ###
+        ###
 
 
         if "toolbar_ctrl" not in kwargs.keys():
@@ -69,6 +164,7 @@ class Map(ipyleaflet.Map):
                     name="Google Satellite"
                 )
                 self.add_layer(layer)
+    
 
     def add_geojson(self, in_geojson, style=None, layer_name="Untitled"):
         """Adds a GeoJSON file to the map.
@@ -147,7 +243,51 @@ class Map(ipyleaflet.Map):
         for tool in toolbar_grid:
             tool.value = False
 
+# Handles draw events
+    # def handle_draw(target, action, geo_json):
+    #     try:
+    #         self.roi_start = True
+    #         geom = geojson_to_ee(geo_json, False)
+    #         self.user_roi = geom
+    #         feature = ee.Feature(geom)
+    #         self.draw_last_json = geo_json
+    #         self.draw_last_feature = feature
+    #         if action == "deleted" and len(self.draw_features) > 0:
+    #             self.draw_features.remove(feature)
+    #             self.draw_count -= 1
+    #         else:
+    #             self.draw_features.append(feature)
+    #             self.draw_count += 1
+    #         collection = ee.FeatureCollection(self.draw_features)
+    #         self.user_rois = collection
+    #         ee_draw_layer = ee_tile_layer(
+    #             collection, {"color": "blue"}, "Drawn Features", False, 0.5
+    #         )
+    #         draw_layer_index = self.find_layer_index("Drawn Features")
 
+    #         if draw_layer_index == -1:
+    #             self.add_layer(ee_draw_layer)
+    #             self.draw_layer = ee_draw_layer
+    #         else:
+    #             self.substitute_layer(self.draw_layer, ee_draw_layer)
+    #             self.draw_layer = ee_draw_layer
+    #         self.roi_end = True
+    #         self.roi_start = False
+    #     except Exception as e:
+    #         self.draw_count = 0
+    #         self.draw_features = []
+    #         self.draw_last_feature = None
+    #         self.draw_layer = None
+    #         self.user_roi = None
+    #         self.roi_start = False
+    #         self.roi_end = False
+    #         print("There was an error creating Earth Engine Feature.")
+    #         raise Exception(e)
+
+
+# if kwargs.get("draw_ctrl"):
+#     self.add_control(draw_control)
+        
 def shp_to_geojson(in_shp, out_geojson=None):
     """Converts a shapefile to GeoJSON.
     Args:

@@ -28,11 +28,13 @@ def random_points(region, color="00FFFF", points=100, seed=0):
           seed:(numeric): default is 0
     Returns: a feature collection of locations
     """
+    
     if (
         not isinstance(region, ee.Geometry)
     ):
-        err_str = "\n\nThe region of interest must be a Geometry."
+        err_str = "\n\nThe region of interest must be an ee.Geometry."
         raise AttributeError(err_str)
+
     color = "000000"
 
     if color is None:
