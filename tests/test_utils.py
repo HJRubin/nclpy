@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
-"""Tests for `nclpy` package."""
+"""Tests for `utils` package."""
 
-
+import os
 import unittest
-import os 
+
 from nclpy import utils, nclpy
 
 
