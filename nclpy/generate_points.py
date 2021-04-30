@@ -21,6 +21,7 @@ def ee_initialize(token_name="EARTHENGINE_TOKEN"):
             ee.Authenticate()
             ee.Initialize()
 
+ee_initialize()
 
 def random_points(region, color="00FFFF", points=100, seed=0):
     """Generates a specified number of random points inside a given area.

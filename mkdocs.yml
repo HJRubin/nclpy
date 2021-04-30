@@ -49,7 +49,7 @@ nav:
           - utils module: utils.md
           - common module: common.md
           - toolbar module: toolbar.md
-          - basempas module: basemaps.md
+          - basemaps module: basemaps.md
           - generate point module: generate_points.md
     - Notebooks:
           - notebooks/ipyleaflet_intro.ipynb 
