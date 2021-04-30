@@ -7,9 +7,9 @@
 
 
 
-**A Python package for working with NCL**
+**A Python package for mapping and geographic applications**
 
-
+-   This package is designed for interactive mapping
 -   Free software: MIT license
 -   Documentation: https://HJRubin.github.io/nclpy
     
@@ -22,7 +22,7 @@ conda install nclpy -c conda-forge
 ```
 ## Features
 
--   Allows you to reproduce NCL-style graphics with Python commands
+-   Supposedly allows you to reproduce NCL-style graphics with Python commands
 -   It turns out this isn't feasible (yet)
 -   Instead we can do some interactive mapping and spatial analysis!
 

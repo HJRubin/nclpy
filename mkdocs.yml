@@ -47,6 +47,10 @@ nav:
     - API Reference:
           - nclpy module: nclpy.md
           - utils module: utils.md
+          - common module: common.md
+          - toolbar module: toolbar.md
+          - basempas module: basemaps.md
+          - generate point module: generate_points.md
     - Notebooks:
           - notebooks/ipyleaflet_intro.ipynb 
           - notebooks/folium_intro.ipynb
