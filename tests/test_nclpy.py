@@ -5,10 +5,7 @@
 
 import unittest
 
-from nclpy import nclpy, common
-
-ee_initialize()
-
+from nclpy import nclpy
 
 class TestNclpy(unittest.TestCase):
     """Tests for `nclpy` package."""
