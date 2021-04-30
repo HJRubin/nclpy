@@ -6,6 +6,7 @@ import ee
 import ipywidgets as widgets
 from ipyleaflet import WidgetControl
 
+
 def ee_initialize(token_name="EARTHENGINE_TOKEN"):
     """Authenticates Earth Engine and initialize an Earth Engine session"""
     if ee.data._credentials is None:
@@ -184,6 +185,7 @@ def tool_template(m=None):
     else:
         return toolbar_widget
 
+
 def geojson_to_ee(geo_json, geodesic=True):
     """Converts a geojson to ee.Geometry()
     Args:
@@ -225,5 +227,4 @@ def geojson_to_ee(geo_json, geodesic=True):
             raise Exception("Could not convert the geojson to ee.Geometry()")
     except Exception as e:
         print("Could not convert the geojson to ee.Geometry()")
-        raise Exception(e)    
-        
+        raise Exception(e)

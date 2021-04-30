@@ -82,7 +82,6 @@ _ee_basemaps = {
         attribution="Esri",
         name="Esri Physical Map",
     ),
-    
 }
 
 # Adds ipyleaflet basemaps
@@ -100,4 +99,5 @@ for item in ipybasemaps.values():
 
 basemap_tiles = Box(_ee_basemaps, frozen_box=True)
 basemaps = Box(
-    dict(zip(list(_ee_basemaps.keys()), list(_ee_basemaps.keys()))), frozen_box=True)
+    dict(zip(list(_ee_basemaps.keys()), list(_ee_basemaps.keys()))), frozen_box=True
+)

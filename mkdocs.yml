@@ -63,6 +63,7 @@ nav:
           - notebooks/ipywidgets_events.ipynb
           - notebooks/toolbar.ipynb
           - notebooks/ipyfilechooser.ipynb
+          - notebooks/geopandas.ipynb
           - notebooks/whitebox.ipynb
           - notebooks/toolbar_gui.ipynb
           - notebooks/generate_points_test.ipynb

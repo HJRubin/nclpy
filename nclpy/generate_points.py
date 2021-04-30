@@ -2,6 +2,7 @@
 import ee
 import ipywidgets as widgets
 
+
 def ee_initialize(token_name="EARTHENGINE_TOKEN"):
     """Authenticates Earth Engine and initialize an Earth Engine session"""
     if ee.data._credentials is None:
@@ -20,6 +21,7 @@ def ee_initialize(token_name="EARTHENGINE_TOKEN"):
             ee.Authenticate()
             ee.Initialize()
 
+
 def random_points(region, color="00FFFF", points=100, seed=0):
     """Generates a specified number of random points inside a given area.
     Args: region(feature): region to generate points
@@ -28,10 +30,8 @@ def random_points(region, color="00FFFF", points=100, seed=0):
           seed:(numeric): default is 0
     Returns: a feature collection of locations
     """
-    
-    if (
-        not isinstance(region, ee.Geometry)
-    ):
+
+    if not isinstance(region, ee.Geometry):
         err_str = "\n\nThe region of interest must be an ee.Geometry."
         raise AttributeError(err_str)
 
@@ -41,7 +41,8 @@ def random_points(region, color="00FFFF", points=100, seed=0):
         color = "00FFFF"
     if points is None:
         points = 100
-     
-    points_rand = ee.FeatureCollection.randomPoints(region = region, points = points, seed = seed)
-    return points_rand
 
+    points_rand = ee.FeatureCollection.randomPoints(
+        region=region, points=points, seed=seed
+    )
+    return points_rand
