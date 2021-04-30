@@ -19,4 +19,3 @@ class TestNclpy(unittest.TestCase):
 
     def test_000_something(self):
         """Test something."""
-        

@@ -5,6 +5,7 @@ from .common import ee_initialize
 
 ee_initialize()
 
+
 def random_points(region, color="00FFFF", points=100, seed=0):
     """Generates a specified number of random points inside a given area.
     Args: region(feature): region to generate points
