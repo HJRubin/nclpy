@@ -13,7 +13,7 @@ def ee_initialize(token_name="EARTHENGINE_TOKEN"):
         try:
             ee_token = os.environ.get(token_name)
             if ee_token is not None:
-                credential_file_path = os.path.expanduser("~/.config/earthengine/")
+                credential_file_path = os.path.expanduser("C:/Users/hanna/.config/earthengine/")
                 if not os.path.exists(credential_file_path):
                     credential = '{"refresh_token":"%s"}' % ee_token
                     os.makedirs(credential_file_path, exist_ok=True)
