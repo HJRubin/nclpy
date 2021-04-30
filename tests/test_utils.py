@@ -5,8 +5,7 @@
 import os
 import unittest
 
-import .utils
-import .nclpy
+from nclpy import utils
 
 
 class TestUtils(unittest.TestCase):
