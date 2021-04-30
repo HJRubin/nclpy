@@ -5,7 +5,7 @@
 
 import unittest
 
-from nclpy import nclpy
+# from nclpy import nclpy
 
 
 # class TestNclpy(unittest.TestCase):
