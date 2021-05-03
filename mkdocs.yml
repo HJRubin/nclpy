@@ -67,3 +67,4 @@ nav:
           - notebooks/whitebox.ipynb
           - notebooks/toolbar_gui.ipynb
           - notebooks/generate_points_test.ipynb
+          - notebooks/csv_to_shapefile.ipynb
