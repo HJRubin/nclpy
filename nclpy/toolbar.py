@@ -110,50 +110,42 @@ def main_toolbar(m):
         with output:
             output.clear_output()
             if b.icon == "folder-open":
-                def open_data_widget(m):
-                    """A widget for opening local vector/raster data.
-                    Args:
-                        m (object): geemap.Map
-                    """
-                    tool_output = widgets.Output()
-                    tool_output_ctrl = WidgetControl(widget=tool_output, position="topright")
+                dropdown = widgets.Dropdown(
+                    options=data_dir,
+                    value="csv",
+                    layout=widgets.Layout(width="200px")
+                )
 
-                    if m.tool_output_ctrl is not None and m.tool_output_ctrl in m.controls:
-                        m.remove_control(m.tool_output_ctrl)
+                close_btn = widgets.Button(
+                    icon="times",
+                    tooltip="Close the csv widget",
+                    button_style="primary",
+                    layout=widgets.Layout(width="32px"),
+                )
 
-                    file_type = widgets.ToggleButtons(
-                        options=["Shapefile", "GeoJSON", "CSV"],
-                        tooltips=[
-                            "Open a shapefile",
-                            "Open a GeoJSON file",
-                            "Open a CSV",
-                        ],
-                    )
+                csv_widget = widgets.HBox([dropdown, close_btn])
 
-                    file_chooser = FileChooser(os.getcwd())
-                    file_chooser.filter_pattern = "*.csv"
-                    file_chooser.use_dir_icons = True
+                def on_click(change):
+                    csv_name = change["new"]
 
-                    style = {"description_width": "initial"}
-                    layer_name = widgets.Text(
-                        value="CSV",
-                        description="Enter a layer name:",
-                        tooltip="Enter a layer name for the selected file",
-                        style=style,
-                        layout=widgets.Layout(width="454px", padding="0px 0px 0px 5px"),
-                    )
+                    if len(m.layers) == 1:
+                        old_csv = m.layers[0]
+                    else:
+                        old_csv = m.layers[1]
+                    m.csv_toshapefile(old_csv)
+                dropdown.observe(on_click, "value")
 
-                    raster_options = widgets.HBox()
+                def close_click(change):
+                    m.toolbar_reset()
+                    if m.csv_ctrl is not None and m.csv_ctrl in m.controls:
+                        m.remove_control(m.csv_ctrl)
+                    csv_widget.close()
 
-                    main_widget = widgets.VBox(
-                        [file_type, file_chooser, layer_name]
-                    )
+                close_btn.on_click(close_click)
 
-                    with tool_output:
-                        display(main_widget)
-                    m.add_control(tool_output_ctrl)
-                    m.tool_output_ctrl = tool_output_ctrl
-                    # m.add_points_from_csv(tool_output_ctrl)
+                csv_control = WidgetControl(widget=csv_widget)
+                m.add_control(csv_control)
+                m.csv_ctrl = csv_control
             elif b.icon == "map":
                 change_basemap(m)
             elif b.icon == "gears":
