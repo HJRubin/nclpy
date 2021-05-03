@@ -110,8 +110,50 @@ def main_toolbar(m):
         with output:
             output.clear_output()
             if b.icon == "folder-open":
-                display(filechooser_widget)
-                m.add_control(output_ctrl)
+                def open_data_widget(m):
+                    """A widget for opening local vector/raster data.
+                    Args:
+                        m (object): geemap.Map
+                    """
+                    tool_output = widgets.Output()
+                    tool_output_ctrl = WidgetControl(widget=tool_output, position="topright")
+
+                    if m.tool_output_ctrl is not None and m.tool_output_ctrl in m.controls:
+                        m.remove_control(m.tool_output_ctrl)
+
+                    file_type = widgets.ToggleButtons(
+                        options=["Shapefile", "GeoJSON", "CSV"],
+                        tooltips=[
+                            "Open a shapefile",
+                            "Open a GeoJSON file",
+                            "Open a CSV",
+                        ],
+                    )
+
+                    file_chooser = FileChooser(os.getcwd())
+                    file_chooser.filter_pattern = "*.csv"
+                    file_chooser.use_dir_icons = True
+
+                    style = {"description_width": "initial"}
+                    layer_name = widgets.Text(
+                        value="CSV",
+                        description="Enter a layer name:",
+                        tooltip="Enter a layer name for the selected file",
+                        style=style,
+                        layout=widgets.Layout(width="454px", padding="0px 0px 0px 5px"),
+                    )
+
+                    raster_options = widgets.HBox()
+
+                    main_widget = widgets.VBox(
+                        [file_type, file_chooser, layer_name]
+                    )
+
+                    with tool_output:
+                        display(main_widget)
+                    m.add_control(tool_output_ctrl)
+                    m.tool_output_ctrl = tool_output_ctrl
+                    # m.add_points_from_csv(tool_output_ctrl)
             elif b.icon == "map":
                 change_basemap(m)
             elif b.icon == "gears":
@@ -194,6 +236,8 @@ def main_toolbar(m):
         basemap_control = WidgetControl(widget=basemap_widget, position="topright")
         m.add_control(basemap_control)
         m.basemap_ctrl = basemap_control
+    
+    
 
     for i in range(rows):
         for j in range(cols):

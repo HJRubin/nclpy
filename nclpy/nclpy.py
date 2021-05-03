@@ -2,7 +2,7 @@
 import os
 import ipyleaflet
 import ee
-from .common import ee_initialize, geojson_to_ee
+from .common import ee_initialize, geojson_to_ee, csv_to_shp
 from ipyleaflet import (
     FullScreenControl,
     LayersControl,
@@ -205,6 +205,10 @@ class Map(ipyleaflet.Map):
         """
         geojson = shp_to_geojson(in_shp)
         self.add_geojson(geojson, style=style, layer_name=layer_name)
+
+    def add_points_from_csv(self, in_csv, x = "longitude", y= "latitude"):
+        shape = csv_to_shp(in_csv)
+        self.add_shapefile(shape)
 
     def add_ee_layer(
         self, ee_object, vis_params={}, name=None, shown=True, opacity=1.0

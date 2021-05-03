@@ -231,3 +231,44 @@ def geojson_to_ee(geo_json, geodesic=True):
     except Exception as e:
         print("Could not convert the geojson to ee.Geometry()")
         raise Exception(e)
+
+def csv_to_shp(in_csv, out_shp=None, latitude="latitude", longitude="longitude"):
+    """Converts a csv file with latlon info to a point shapefile.
+    Args:
+        in_csv (str): The input csv file containing longitude and latitude columns.
+        out_shp (str): The file path to the output shapefile.
+        latitude (str, optional): The column name of the latitude column. Defaults to 'latitude'.
+        longitude (str, optional): The column name of the longitude column. Defaults to 'longitude'.
+    """
+    import shapefile as shp
+
+    if in_csv.startswith("http") and in_csv.endswith(".csv"):
+        out_dir = os.path.join(os.path.expanduser("~"), "Downloads")
+        out_name = os.path.basename(in_csv)
+
+        if not os.path.exists(out_dir):
+            os.makedirs(out_dir)
+        download_from_url(in_csv, out_dir=out_dir)
+        in_csv = os.path.join(out_dir, out_name)
+
+    out_dir = os.path.dirname(out_shp)
+    if not os.path.exists(out_dir):
+        os.makedirs(out_dir)
+
+    try:
+        points = shp.Writer(out_shp, shapeType=shp.POINT)
+        with open(in_csv, encoding="utf-8") as csvfile:
+            csvreader = csv.DictReader(csvfile)
+            header = csvreader.fieldnames
+            [points.field(field) for field in header]
+            for row in csvreader:
+                points.point((float(row[longitude])), (float(row[latitude])))
+                points.record(*tuple([row[f] for f in header]))
+
+        out_prj = out_shp.replace(".shp", ".prj")
+        with open(out_prj, "w") as f:
+            prj_str = 'GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137,298.257223563]],PRIMEM["Greenwich",0],UNIT["Degree",0.0174532925199433]] '
+            f.write(prj_str)
+
+    except Exception as e:
+        print(e)
